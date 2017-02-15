@@ -1,0 +1,30 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/* 
+ * File:   numbers.h
+ * Author: Henk-Jan <>
+ *
+ * Created on 29 januari 2017, 12:00
+ */
+#include <Arduino.h>
+
+#ifndef NUMBERS_H
+#define NUMBERS_H
+
+const static byte N_0_small [] = {B11100000,B10100000,B10100000,B10100000,B11100000, B00000000,B00000000,B00000000} ;
+const static byte N_1_small [] = {B11000000,B01000000,B01000000,B01000000,B11100000, B00000000,B00000000,B00000000} ;
+const static byte N_2_small [] = {B11100000,B00100000,B11100000,B10000000,B11100000, B00000000,B00000000,B00000000};
+const static byte N_3_small [] = {B11100000,B00100000,B11100000,B00100000,B11100000, B00000000,B00000000,B00000000} ;
+const static byte N_4_small [] = {B10100000,B10100000,B11100000,B00100000,B00100000, B00000000,B00000000,B00000000} ;
+const static byte N_5_small [] = {B11100000,B10000000,B11100000,B00100000,B11100000, B00000000,B00000000,B00000000};
+const static byte N_6_small [] = {B11100000,B10000000,B11100000,B10100000,B11100000, B00000000,B00000000,B00000000} ;
+const static byte N_7_small [] = {B11100000,B00100000,B01000000,B01000000,B01000000, B00000000,B00000000,B00000000} ;
+const static byte N_8_small [] = {B11100000,B10100000,B11100000,B10100000,B11100000, B00000000,B00000000,B00000000} ;
+const static byte N_9_small [] = {B11100000,B10100000,B11100000,B00100000,B11100000, B00000000,B00000000,B00000000} ;
+
+#endif /* NUMBERS_H */
+

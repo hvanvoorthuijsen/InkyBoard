@@ -1,0 +1,52 @@
+#######################################
+# Syntax Coloring Map For programmeren.school.bord
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Display	KEYWORD1
+InkyBoard	KEYWORD1
+Color	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+init	KEYWORD2
+initServo	KEYWORD2
+setServo	KEYWORD2
+getPot	KEYWORD2
+setLED	KEYWORD2
+isKnock	KEYWORD2
+isButton	KEYWORD2
+setRGB	KEYWORD2
+getLight	KEYWORD2
+getColor	KEYWORD2
+setColor	KEYWORD2
+isReed	KEYWORD2
+
+clear	KEYWORD2
+sleep	KEYWORD2
+wakeup	KEYWORD2
+intensity	KEYWORD2
+image	KEYWORD2
+pixel	KEYWORD2
+row	KEYWORD2
+column	KEYWORD2
+shift	KEYWORD2
+number	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+ON	LITERAL1
+OFF	LITERAL1
+TOGGLE	LITERAL1
+TOP	LITERAL1
+RIGHT	LITERAL1
+BOTTOM	LITERAL1
+LEFT	LITERAL1
+DEBUG	LITERAL1
