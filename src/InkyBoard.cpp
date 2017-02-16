@@ -202,6 +202,7 @@ void InkyBoard::getColor(bool continuous){
         for (counter = 0; counter < 3; counter ++){
             if(counter > 0) digitalWrite(this->apRGB[counter-1], LOW);
             digitalWrite(this->apRGB[counter], HIGH);
+            delay(this->colorTimer/2);
             
             int color = analogRead(this->pLight);
             color = constrain(map(color, this->colorCalibration[counter+3], this->colorCalibration[counter], 0, 255),0,255);
@@ -216,7 +217,7 @@ void InkyBoard::getColor(bool continuous){
                     this->colorB = color;
                     break;
             }
-            delay(this->colorTimer);
+            delay(this->colorTimer/2);
         }
         counter = 0;
     }
@@ -227,6 +228,62 @@ void InkyBoard::getColor(bool continuous){
         Serial.print(this->colorG);
         Serial.print(F(" B="));
         Serial.println(this->colorB);
+    }
+}
+/**
+* Calibrate the colors with black and white paper
+* @param blackWhite 1 == black, 2 = white
+*/
+void InkyBoard::calibrateColor(int blackWhite){
+    if(this->DEBUG){
+        Serial.print(F("Calibration started, hold "));
+        if(blackWhite == this->CALIBRATE_BLACK) Serial.print(F("black"));
+        if(blackWhite == this->CALIBRATE_WHITE) Serial.print(F("white"));
+        Serial.println(F(" paper in front of the sensor in 3 seconds"));
+        Serial.print(3);
+        Serial.print(F(" "));
+        delay(1000);
+        Serial.print(2);
+        Serial.print(F(" "));
+        delay(1000);
+        Serial.println(1);
+        delay(1000);
+    }
+    
+    for (int i = 1; i < 3; i++){
+        digitalWrite(this->apRGB[i], LOW);
+    }
+    for (int counter = 0; counter < 3; counter ++){
+        digitalWrite(this->apRGB[counter], HIGH);
+        delay(this->colorTimer/2);
+        
+        int calibrationNr = counter;
+        if(blackWhite == this->CALIBRATE_BLACK) calibrationNr += 3;
+        
+        int calibration = 0;
+        for(int i = 0; i < 10; i++){
+            calibration += analogRead(this->pLight);
+            delay(20);
+        }
+        this->colorCalibration[calibrationNr] = calibration / 10;
+        
+        delay(this->colorTimer/2);
+        digitalWrite(this->apRGB[counter], LOW);
+    }
+    if(this->DEBUG){
+        Serial.print(F("Calibration for "));
+        if(blackWhite == this->CALIBRATE_BLACK) Serial.print(F("black"));
+        if(blackWhite == this->CALIBRATE_WHITE) Serial.print(F("white"));
+        Serial.println(F(" paper is finished"));
+        
+        int add = 0;
+        if(blackWhite == this->CALIBRATE_BLACK) add += 3;
+        Serial.print(F("calibration: R="));
+        Serial.print(this->colorCalibration[0+add]);
+        Serial.print(F(" G="));
+        Serial.print(this->colorCalibration[1+add]);
+        Serial.print(F(" B="));
+        Serial.println(this->colorCalibration[2+add]);
     }
 }
 /**

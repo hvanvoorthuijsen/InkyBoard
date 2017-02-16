@@ -86,6 +86,11 @@ public:
      */
     void getColor(bool continuous = true);
     /**
+     * Calibrate the colors with black and white paper
+     * @param blackWhite 1 == black, 2 = white
+     */
+    void calibrateColor(int blackWhite = 1);
+    /**
      * Set RGB to predefined color
      * @param color predefined color array
      */
@@ -148,6 +153,8 @@ public:
     int colorR = 0;
     int colorG = 0;
     int colorB = 0;
+    const int CALIBRATE_BLACK = 1;
+    const int CALIBRATE_WHITE = 2;
 
     // LED MATRIX DISPLAY
     const int pMatrixDIN = 2;
