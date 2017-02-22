@@ -9,7 +9,7 @@
 
 InkyBoard B; // definieer B als InkyBoard
 void setup() {
-  B.init(); // initieer het bord (de vier led's knipperen 1x bij opstaren)
+  B.init(); // initieer het bord 
 }
 
 void loop() {

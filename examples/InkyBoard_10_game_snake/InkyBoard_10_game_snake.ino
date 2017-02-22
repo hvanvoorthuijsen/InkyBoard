@@ -45,7 +45,7 @@ void snakeStart(){
   parts[0].y = 0; // starting y position
   snakeDirection = 1; // starting direction
   snakeRefreshRate = 100; // starting speed
-  ghost = true; // gost mode
+  ghost = false; // gost mode, if true the snake can go trough walls
   
   randomSeed(analogRead(B.pLight)); // make sure the random function is random
   random(1000); // start up the random function (weird arduino stuff)

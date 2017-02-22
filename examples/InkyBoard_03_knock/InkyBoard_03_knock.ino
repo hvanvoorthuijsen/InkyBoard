@@ -11,11 +11,16 @@
 InkyBoard B; // definieer B als InkyBoard
 
 void setup() {
-  B.init(); // initieer het bord (de vier led's knipperen 1x bij opstaren)
+  B.init(); // initieer het bord 
 }
 
 void loop() {
-  static int ledCounter = 0; // Counter om bij te houden welke led aan moet. Static betekend dat deze maar één keer wordt aangeroepen. Dus alleen aan het begin wordt de counter op 0 gezet, daarna niet meer.
+    /**
+     * Een static variabele wordt niet verwijderd aan het eind van de functie zoals een 'gewone' variabele. De variabele is elke keer weer beschikbaar (alleen in deze functie!).
+     * De waarde die erachter staat wordt alleen de eerste keer toegewezen, daarna niet meer.
+     */
+  static int ledCounter = 0; // Counter om bij te houden welke led aan moet.
+  
   if(B.isKnock()){ // Als er een tik is gedetecteerd
     B.setLED(ledCounter, B.ON); // LED aan
     delay(200); // Even aan laten
