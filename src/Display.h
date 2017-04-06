@@ -75,6 +75,7 @@ class Matrix {
         int maxDevices;
 
     public:
+        bool autoSend = true;
         /* 
          * Create a new controler 
          * Params :
@@ -190,13 +191,26 @@ class Matrix {
         void setChar(int addr, int digit, char value, boolean dp);
         
         void shift(int addr, int direction, int amount = 1);
+        
+        void rotate(int addr, int rotation);
+        
+        void send();
 };
 
 class Display{
     public:
-        Display(int pMatrixDIN, int pMatrixCLK, int pMatrixLOAD);
+        const int ROTATE_90 = 1;
+        const int ROTATE_180 = 2;
+        const int ROTATE_270 = 3;
+        const int FLIP_H = 4;
+        const int FLIP_V = 5;
+        
+        Display(int pMatrixDIN, int pMatrixCLK, int pMatrixLOAD, int deviceCount=1);
         Matrix matrix;
         void init(bool SPLASH = true);
+        
+        Display& changeDevice(int deviceNumber);
+        Display& d(int deviceNumber);
         
         void clear();
         void sleep();
@@ -215,8 +229,14 @@ class Display{
         
         void number(int number, int offset_x = 3, int offset_y = 2);
         
+        void rotate(int rotation);
+        
+        void setAutoSend(bool autoSend);
+        void send();
+        
     private :
         int ADDRESS = 0;
+        int deviceCount = 1;
 };
 
 

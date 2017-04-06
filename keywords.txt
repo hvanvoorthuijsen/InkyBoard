@@ -1,5 +1,5 @@
 #######################################
-# Syntax Coloring Map For programmeren.school.bord
+# Syntax Coloring Map For InkyBoard
 #######################################
 
 #######################################
@@ -38,6 +38,11 @@ row	KEYWORD2
 column	KEYWORD2
 shift	KEYWORD2
 number	KEYWORD2
+changeDevice	KEYWORD2
+d	KEYWORD2
+rotate	KEYWORD2
+setAutoSend	KEYWORD2
+send	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
@@ -50,6 +55,15 @@ TOP	LITERAL1
 RIGHT	LITERAL1
 BOTTOM	LITERAL1
 LEFT	LITERAL1
+RED	LITERAL1
+GREEN	LITERAL1
+YELLOW	LITERAL1
+BLUE	LITERAL1
 DEBUG	LITERAL1
 CALIBRATE_BLACK	LITERAL1
 CALIBRATE_WHITE	LITERAL1
+ROTATE_90	LITERAL1
+ROTATE_180	LITERAL1
+ROTATE_270	LITERAL1
+FLIP_H	LITERAL1
+FLIP_V	LITERAL1

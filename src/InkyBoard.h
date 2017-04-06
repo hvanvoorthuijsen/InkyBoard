@@ -84,7 +84,7 @@ public:
      * get reflected light from RGB and write R, G and B value to .colorR, .colorG, .colorB
      * @param continuous wait for all colors or do it continuous
      */
-    void getColor(bool continuous = true);
+    void getColor(bool continuous = false);
     /**
      * Calibrate the colors with black and white paper
      * @param blackWhite 1 == black, 2 = white
@@ -95,6 +95,11 @@ public:
      * @param color predefined color array
      */
     void setColor(Color color);
+    /**
+     * to set RGB led to the colors of the normal leds (only red, yellow, green, blue)
+     * @param color
+     */
+    void setColor(int color);
     /**
      * reed sensor is parallel to right button!
      * @return state of reed sensor
@@ -119,9 +124,13 @@ public:
 
     // POSITIONS 
     const int TOP = 0;
+    const int RED = 0;
     const int RIGHT = 1;
+    const int YELLOW = 1;
     const int BOTTOM = 2;
+    const int GREEN = 2;
     const int LEFT = 3;
+    const int BLUE = 3;
     
     // ON / OFF
     const int ON = HIGH;
@@ -170,21 +179,13 @@ public:
     //http://www.computerhope.com/htmcolor.htm
     const Color cRed  = {0xFF,0x00,0x00};
     const Color cBlue = {0x00,0x00,0xFF};
-    const Color cCyan = {0x00,0xFF,0x00};
-    const Color cDarkblue = {0x00,0x00,0xA0};
-    const Color cLightblue = {0xAD,0xD8,0xE6};
-    const Color cPurple = {0x80,0x00,0x80};
-    const Color cYellow = {0xFF,0xFF,0x00};
+    const Color cYellow = {0xFF,0x70,0x00};
     const Color cGreen = {0x00,0xFF,0x00};
-    const Color cMagenta = {0xFF,0x00,0xFF};
     const Color cWhite = {0xff,0xff,0xff};
-    const Color cSilver = {0xC0,0xC0,0xC0};
-    const Color cGray = {0x80,0x80,0x80};
-    const Color cOrange = {0xFF,0xA5,0x00};
-    const Color cBrown = {0xA5,0x2A,0x2A};
-    const Color cMaroon = {0x80,0x00,0x00};
-    const Color cDarkgreen = {0x00,0x80,0x00};
-    const Color cOlive = {0x80,0x80,0x00};
+    const Color cPurple = {0xA0,0x0D,0xFF};
+    const Color cLightblue = {0x00,0xBB,0xFF};
+    const Color cOrange = {0xFF,0x20,0x00};
+    const Color cPink = {0xFF,0x00,0x70};
     
 private:
     void initLED_Buttons();

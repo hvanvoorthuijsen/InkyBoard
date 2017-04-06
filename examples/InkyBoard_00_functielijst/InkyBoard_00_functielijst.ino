@@ -75,7 +75,7 @@ int getLight(bool servoReady = false);
  * get reflected light from RGB and write R, G and B value to .colorR, .colorG, .colorB
  * @param continuous wait for all colors or do it continuous
  */
-void getColor(bool continuous = true);
+void getColor(bool continuous = false);
 /**
  * Set RGB to predefined color
  * @param color predefined color array
@@ -90,6 +90,10 @@ const int TOP = 0;
 const int RIGHT = 1;
 const int BOTTOM = 2;
 const int LEFT = 3;
+const int RED = 0;
+const int YELLOW = 1;
+const int GREEN = 2;
+const int BLUE = 3;
 const int ON = HIGH;
 const int OFF = LOW;
 const int TOGGLE = -1;
@@ -199,3 +203,20 @@ void shift(int direction, int amount = 1);
  * @param offset_y
  */
 void number(int number, int offset_x = 3, int offset_y = 2);
+
+/**
+ * Rotate the current visible display
+ * @param rotation display. + ROTATE_90, ROTATE_180, ROTATE_270, FLIP_H, FLIP_V
+ */
+void rotate(int rotation);
+
+/**
+ * Send to display(s) directly after each command or wait for send
+ * @param autoSend
+ */
+void setAutoSend(bool autoSend);
+
+/**
+ * if autosend = false this function sends the buffer to the display(s)
+ */
+void send();
