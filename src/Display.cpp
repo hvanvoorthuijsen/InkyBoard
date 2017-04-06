@@ -49,9 +49,9 @@
  * CLASS DISPLAY **
  *****************/
 
-Display::Display(int pMatrixDIN, int pMatrixCLK, int pMatrixLOAD)
-: matrix(pMatrixDIN,pMatrixCLK,pMatrixLOAD,1){
-    
+Display::Display(int pMatrixDIN, int pMatrixCLK, int pMatrixLOAD, int deviceCount)
+: matrix(pMatrixDIN,pMatrixCLK,pMatrixLOAD,deviceCount){
+    this->deviceCount = deviceCount;
 }
 
 void Display::init(bool SPLASH){
@@ -75,6 +75,24 @@ void Display::init(bool SPLASH){
             delay(30);
         }
     }
+}
+
+Display& Display::changeDevice(int deviceNumber){
+    if(deviceNumber < this->deviceCount) this->ADDRESS = deviceNumber;
+    return *this;
+}
+
+Display& Display::d(int deviceNumber){
+    if(deviceNumber < this->deviceCount) this->ADDRESS = deviceNumber;
+    return *this;
+}
+
+void Display::setAutoSend(bool autoSend){
+    this->matrix.autoSend = autoSend;
+}
+
+void Display::send(){
+    this->matrix.send();
 }
 
 void Display::clear(){
@@ -188,6 +206,10 @@ void Display::number(int number, int offset_x, int offset_y){
     }
 }
 
+void Display::rotate(int rotation){
+    this->matrix.rotate(this->ADDRESS, rotation);
+}
+
 /********************
  * SUBCLASS MATRIX **
  *******************/
@@ -253,7 +275,7 @@ void Matrix::clearDisplay(int addr) {
     offset=addr*8;
     for(int i=0;i<8;i++) {
         status[offset+i]=0;
-        spiTransfer(addr, i+1,status[offset+i]);
+        if(this->autoSend) spiTransfer(addr, i+1,status[offset+i]);
     }
 }
 
@@ -273,7 +295,7 @@ void Matrix::setLed(int addr, int row, int column, boolean state) {
         val=~val;
         status[offset+row]=status[offset+row]&val;
     }
-    spiTransfer(addr, row+1,status[offset+row]);
+    if(this->autoSend) spiTransfer(addr, row+1,status[offset+row]);
 }
 
 void Matrix::setRow(int addr, int row, byte value,boolean noClear) {
@@ -289,7 +311,7 @@ void Matrix::setRow(int addr, int row, byte value,boolean noClear) {
     else{
         status[offset+row]=value;
     }
-    spiTransfer(addr, row+1,status[offset+row]);
+    if(this->autoSend) spiTransfer(addr, row+1,status[offset+row]);
 }
 
 void Matrix::setScreen(int addr, byte value[], boolean noClear){
@@ -337,7 +359,7 @@ void Matrix::setDigit(int addr, int digit, byte value, boolean dp) {
     if(dp)
         v|=B10000000;
     status[offset+digit]=v;
-    spiTransfer(addr, digit+1,v);
+    if(this->autoSend) spiTransfer(addr, digit+1,v);
 }
 
 void Matrix::setChar(int addr, int digit, char value, boolean dp) {
@@ -358,7 +380,7 @@ void Matrix::setChar(int addr, int digit, char value, boolean dp) {
     if(dp)
         v|=B10000000;
     status[offset+digit]=v;
-    spiTransfer(addr, digit+1,v);
+    if(this->autoSend) spiTransfer(addr, digit+1,v);
 }
 
 void Matrix::spiTransfer(int addr, volatile byte opcode, volatile byte data) {
@@ -398,7 +420,7 @@ void Matrix::shift(int addr, int direction, int amount){
                 if(newRow >= 8) status[offset+row] = 0;
                 else status[offset+row] = status[offset+newRow];
 
-                spiTransfer(addr, row+1,status[offset+row]);
+                if(this->autoSend) spiTransfer(addr, row+1,status[offset+row]);
             }
             break;
         case 2:
@@ -407,21 +429,79 @@ void Matrix::shift(int addr, int direction, int amount){
                 if(newRow < 0) status[offset+row] = 0;
                 else status[offset+row] = status[offset+newRow];
 
-                spiTransfer(addr, row+1,status[offset+row]);
+                if(this->autoSend) spiTransfer(addr, row+1,status[offset+row]);
             }
             break;
         case 1:
             for (int row = 0; row < 8; row++){
                 status[offset+row] = status[offset+row] >> amount;
-                spiTransfer(addr, row+1,status[offset+row]);
+                if(this->autoSend) spiTransfer(addr, row+1,status[offset+row]);
             }
             break;
         case 3:
             for (int row = 0; row < 8; row++){
                 status[offset+row] = status[offset+row] << amount;
-                spiTransfer(addr, row+1,status[offset+row]);
+                if(this->autoSend) spiTransfer(addr, row+1,status[offset+row]);
             }
             break;
     }
     
+}
+
+void Matrix::rotate(int addr, int rotation){
+    int offset;
+    if(addr<0 || addr>=maxDevices)
+            return;
+    offset=addr*8;
+    
+    byte newStatus[] = {0,0,0,0,0,0,0,0};
+    switch(rotation){
+        case 1: // rotate 90 degrees cw
+            for(int row = 0; row < 8; row++){
+                for(int column = 0; column < 8; column++){
+                    if(status[offset+row] & 1 << column) newStatus[7-column] = newStatus[7-column] | 1 << (row);
+                }
+            }
+            break;
+        case 2: //rotate 180
+            for(int row = 0; row < 8; row++){
+                for(int column = 0; column < 8; column++){
+                    if(status[offset+row] & 1 << column) newStatus[7-row] = newStatus[7-row] | 1 << (7-column);
+                }
+            }
+            break;
+        case 3: // rotate 270 cw
+            for(int row = 0; row < 8; row++){
+                for(int column = 0; column < 8; column++){
+                    if(status[offset+row] & 1 << column) newStatus[column] = newStatus[column] | 1 << (7-row);
+                }
+            }
+            break;
+        case 4: // flip horizontal
+            for(int row = 0; row < 8; row++){
+                newStatus[row] = status[offset+7-row];
+            }
+            break;
+        case 5: // flip vertical
+            for(int row = 0; row < 8; row++){
+                for(int column = 0; column < 8; column++){
+                    if(status[offset+row] & 1 << column) newStatus[row] = newStatus[row] | 1 << (7-column);
+                }
+            }
+            break;
+    }
+    
+    for(int row = 0; row < 8; row++){
+        status[offset+row] = newStatus[row];
+        if(this->autoSend) spiTransfer(addr, row+1, status[offset+row]);
+    }
+}
+
+void Matrix::send(){
+    if(this->autoSend) return;
+    for(int d = 0; d < this->maxDevices; d++){
+        for(int row = 0; row < 8; row++){
+            spiTransfer(d, row+1,status[(d*8)+row]);
+        }
+    }
 }

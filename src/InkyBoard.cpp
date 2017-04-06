@@ -74,9 +74,9 @@ void InkyBoard::setServo(int pos){
  */
 int InkyBoard::getPot(bool servoReady){
     /**
-    * @todo: bij v1 bord zit de potmeter andersom! mag weg bij v2!
+    * 
     */
-    int potVal = 1023 - analogRead(this->pPot);
+    int potVal = analogRead(this->pPot);
     
     if(servoReady){
         
@@ -167,6 +167,7 @@ int InkyBoard::getLight(bool servoReady){
  */
 void InkyBoard::getColor(bool continuous){
     static unsigned long colorTimer = millis();
+    static unsigned long debugTimer = millis();
     static int counter = 0;
     
     if(continuous){
@@ -176,7 +177,8 @@ void InkyBoard::getColor(bool continuous){
                 int value = (counter == i)?HIGH:LOW;
                 digitalWrite(this->apRGB[i], value);
             }
-
+        }
+        else if((millis() - colorTimer) > (this->colorTimer / 5)){
             int color = analogRead(this->pLight);
             color = constrain(map(color, this->colorCalibration[counter+3], this->colorCalibration[counter], 0, 255),0,255);
             switch(counter){
@@ -202,6 +204,7 @@ void InkyBoard::getColor(bool continuous){
         for (counter = 0; counter < 3; counter ++){
             if(counter > 0) digitalWrite(this->apRGB[counter-1], LOW);
             digitalWrite(this->apRGB[counter], HIGH);
+            
             delay(this->colorTimer/2);
             
             int color = analogRead(this->pLight);
@@ -219,9 +222,16 @@ void InkyBoard::getColor(bool continuous){
             }
             delay(this->colorTimer/2);
         }
+        digitalWrite(this->apRGB[2], LOW);
         counter = 0;
     }
     if(this->DEBUG && counter == 0){
+        if(continuous && (millis() - debugTimer) > 500){
+            debugTimer = millis();
+        }
+        else if (continuous){
+            return;
+        }
         Serial.print(F("color sensor: R="));
         Serial.print(this->colorR);
         Serial.print(F(" G="));
@@ -294,6 +304,25 @@ void InkyBoard::setColor(InkyBoard::Color color){
     analogWrite(this->pRedLed, color.R);
     analogWrite(this->pGreenLed, color.G);
     analogWrite(this->pBlueLed, color.B);
+}
+void InkyBoard::setColor(int color){
+    switch(color){
+        case 0:
+            this->setColor(this->cRed);
+            break;
+        case 2:
+            this->setColor(this->cGreen);
+            break;
+        case 1:
+            this->setColor(this->cYellow);
+            break;
+        case 3:
+            this->setColor(this->cBlue);
+            break;
+        default:
+            this->setColor(this->cWhite);
+            break;
+    }
 }
 /**
  * reed sensor is parallel to right button!

@@ -13,6 +13,7 @@ void setup() {
   B.init(); // initieer het bord 
 
   B.calibrateColor(B.CALIBRATE_BLACK); // zwart kalibreren, als debug aanstaat wordt er eerst 3 sec gewacht zodat je tijd hebt om papier voor de sensor te doen
+  delay(1000);
   B.calibrateColor(B.CALIBRATE_WHITE); // ook wit kalibreren
 }
 
