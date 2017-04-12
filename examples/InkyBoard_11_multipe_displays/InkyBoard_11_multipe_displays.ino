@@ -69,14 +69,9 @@ void setup() {
    * initialize all the displays
    */
   for(int i = 0; i < deviceCount; i++){
-    /**
-     * display.changeDevice(i).init(false); 
-     *    is the same as:
-     * display.changeDevice(i);
-     * display.init(false);
-     */
     display.changeDevice(i).init(false); 
   }
+  display.setAutoSend(false); // don't send after each command but buildup all displays and send in one go
 }
 
 void loop() {
@@ -99,8 +94,13 @@ void loop() {
       display.d(7).number(time.seconds % 10);
       display.d(5).image(dots);
     }
+
+    for(int i = 1; i < deviceCount; i++){
+      display.d(i).rotate(display.ROTATE_90); // rotate the displays
+    }
     
     dotsOn = true;
+    display.send();
   }
   else if( ((millis() - timing) > 500) && dotsOn){ // and after 0.5 seconds delete dots
     display.d(2).clear();
@@ -108,5 +108,6 @@ void loop() {
       display.d(5).clear();
     }
     dotsOn = false;
+    display.send();
   }
 }
