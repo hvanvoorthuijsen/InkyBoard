@@ -169,6 +169,7 @@ void InkyBoard::getColor(bool continuous){
     static unsigned long colorTimer = millis();
     static unsigned long debugTimer = millis();
     static int counter = 0;
+    static bool gotColor = false;
     
     if(continuous){
         if((millis() - colorTimer) > this->colorTimer){
@@ -177,8 +178,9 @@ void InkyBoard::getColor(bool continuous){
                 int value = (counter == i)?HIGH:LOW;
                 digitalWrite(this->apRGB[i], value);
             }
+            gotColor = false;
         }
-        else if((millis() - colorTimer) > (this->colorTimer / 5)){
+        else if((millis() - colorTimer) > (this->colorTimer / 5) && !gotColor){
             int color = analogRead(this->pLight);
             color = constrain(map(color, this->colorCalibration[counter+3], this->colorCalibration[counter], 0, 255),0,255);
             switch(counter){
@@ -192,7 +194,7 @@ void InkyBoard::getColor(bool continuous){
                     this->colorB = color;
                     break;
             }
-
+            gotColor = true;
             counter ++;
             if(counter >= 3) counter = 0;
         }

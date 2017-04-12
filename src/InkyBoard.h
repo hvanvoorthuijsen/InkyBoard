@@ -146,7 +146,7 @@ public:
     
     // KLOP SENSOR
     const int pKnock = A7;
-    int knockThreshold = 200;
+    int knockThreshold = 100;
 
     // RGB LED
     const int pRedLed = 9;
@@ -157,7 +157,8 @@ public:
 
     // LIGHT SENSOR
     const int pLight = A1;
-    int colorCalibration[6] = {970,840,1020,200,220,220};
+    //int colorCalibration[6] = {456,826,822,198,276,283};
+    int colorCalibration[6] = {420,810,805,200,275,280};
     unsigned int colorTimer = 50;
     int colorR = 0;
     int colorG = 0;
