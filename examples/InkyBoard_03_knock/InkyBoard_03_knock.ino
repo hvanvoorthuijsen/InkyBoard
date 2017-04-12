@@ -24,7 +24,7 @@ void loop() {
   if(B.isKnock()){ // Als er een tik is gedetecteerd
     B.setLED(ledCounter, B.ON); // LED aan
     delay(200); // Even aan laten
-    B.setLED(ledCounter, B.OFF); LED uit
+    B.setLED(ledCounter, B.OFF); // LED uit
     ledCounter++; // Volgende LED
     if(ledCounter >= 4) ledCounter = 0; // Er zijn maar 4 LED's (0-3)
   }

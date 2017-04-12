@@ -123,7 +123,7 @@ const int pMatrixLOAD = 8;
 /******************
  *** VARIABELEN ***
  *****************/
-int knockThreshold = 200; // drempelwaarde voor de analoge input van de klopsensor, lager = gevoeliger
+int knockThreshold = 100; // drempelwaarde voor de analoge input van de klopsensor, lager = gevoeliger
 int colorTimer = 50; // snelheid van kleurmeting
 int colorR = 0; // bevat weerkaatsing rood licht (na uitlezen kleuren)
 int colorG = 0; // bevat weerkaatsing groen licht (na uitlezen kleuren)
