@@ -331,5 +331,5 @@ void InkyBoard::setColor(int color){
  * @return state of reed sensor
  */
 bool InkyBoard::isReed(){
-    return true;
+    return this->isButton(1);
 }
